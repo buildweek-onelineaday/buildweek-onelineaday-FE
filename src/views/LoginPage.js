@@ -59,10 +59,11 @@ const styles = (props) => ({
   },
   card: {
     padding: '2rem 1rem',
+    margin: '0 auto',
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
   },
   avatar: {
     backgroundColor: props.palette.secondary.main,
@@ -79,7 +80,6 @@ const styles = (props) => ({
     textDecoration: 'underline',
   },
   dialog: {
-    backgroundColor: props.palette.background.paper,
     padding: '0',
   },
   appBar: {
@@ -184,7 +184,8 @@ class LoginPage_ extends React.Component {
             <source src={BackgroundVideo} type='video/mp4' />
           </video>
         </div>
-        <div className={this.classes.cardContainer}>
+        {/* <div className={this.classes.cardContainer}> */}
+        <Container className={this.classes.cardContainer} maxWidth='sm'>
           <Card className={this.classes.card}>
             <Avatar className={this.classes.avatar}>
               <LockOutlinedIcon />
@@ -232,7 +233,7 @@ class LoginPage_ extends React.Component {
                 color='secondary'
                 onClick={this.handleSubmit}
               >
-                Sign In
+                {`Sign In`}
               </Button>
               <Button
                 type='button'
@@ -246,7 +247,8 @@ class LoginPage_ extends React.Component {
               </Button>
             </form>
           </Card>
-        </div>
+          {/* </div> */}
+        </Container>
         <Dialog
           fullscreen='true'
           open={this.state.signupAccess}
@@ -348,14 +350,14 @@ LoginPage_.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const LoginPage = withStyles(styles)(LoginPage_);
+
 const mapStateToProps = (state) => {
   return {
     error: state.loginReducer.error,
     pending: state.loginReducer.pending,
   };
 };
-
-const LoginPage = withStyles(styles)(LoginPage_);
 
 export default connect(
   mapStateToProps,
