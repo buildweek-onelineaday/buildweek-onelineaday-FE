@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.2.0",
     "axios": "^0.19.0",
+    "clsx": "^1.0.4",
     "local-storage": "^2.0.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
