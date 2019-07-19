@@ -17,12 +17,11 @@ export default ({ entries }) => {
         container
         direction="column"
         justify="space-evenly"
-        spacing={2}
       >
         {entries.map(entry => (
           <Entry 
             key={entry.id}
-            {...entry}
+            entry={entry}
           />
         ))}
       </Grid>
