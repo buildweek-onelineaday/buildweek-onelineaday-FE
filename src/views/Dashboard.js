@@ -28,7 +28,7 @@ import {
 } from '@material-ui/icons';
 
 import { addEntry, deleteEntry, updateEntry, closeModal } from '../store/actions';
-import { EntryForm, EntryModal, Timeline } from '../components/dashboard/';
+import { EntryForm, EntryModal, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
   <div>
@@ -195,9 +195,10 @@ function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
+          <QuoteCard />
           <EntryForm addEntry={props.addEntry} />
           <EntryModal
-            activeEntry={props.activeEntry} 
+            activeEntry={props.activeEntry}
             onClose={props.closeModal}
             open={props.modalOpen}
             updateEntry={props.updateEntry}
@@ -216,14 +217,14 @@ Dashboard.propTypes = {
 const mapStateToProps = (state) => ({
   activeEntry: state.activeEntry,
   entries: state.entries,
-  modalOpen: state.modalOpen
+  modalOpen: state.modalOpen,
 });
 
 const mapDispatch = {
   addEntry,
   deleteEntry,
   updateEntry,
-  closeModal
+  closeModal,
 };
 
 export default connect(
