@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -59,6 +60,7 @@ const secondaryListItems = (
 );
 
 const drawerWidth = 240;
+const today = moment();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -195,8 +197,11 @@ function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
-          <QuoteCard />
-          <EntryForm addEntry={props.addEntry} />
+          {props.entries[0] && today.isSame(moment(props.entries[0].date), 'day') ? (
+            <QuoteCard />
+          ) : (
+            <EntryForm addEntry={props.addEntry} />
+          )}
           <EntryModal
             activeEntry={props.activeEntry}
             onClose={props.closeModal}

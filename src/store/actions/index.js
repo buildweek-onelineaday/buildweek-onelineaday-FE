@@ -1,4 +1,5 @@
 import axios from 'axios';
+import auth from '../auth';
 
 // USER LOGIN AND CREATION ACTION VARIABLES
 export const LOGIN_START = 'LOGIN_START';
@@ -33,12 +34,13 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 // ACTIONS
 export const login = (loginInfo) => (dispatch) => {
   dispatch({ type: LOGIN_START });
-  const request = axios.post(``, loginInfo);
+  const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/login`, loginInfo);
   request
     .then((response) => {
+      console.log(response);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: response.data.payload,
+        payload: response.data.payload, // TODO: update to match what is being received from backend
       });
     })
     .catch((error) => {
@@ -51,12 +53,13 @@ export const login = (loginInfo) => (dispatch) => {
 
 export const signUp = (signupInfo) => (dispatch) => {
   dispatch({ type: SIGNUP_START });
-  const request = axios.post(``, signupInfo);
+  console.log(signupInfo);
+  const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/register`, signupInfo);
   request
     .then((response) => {
       dispatch({
         type: SIGNUP_SUCCESS,
-        payload: response.data.payload,
+        payload: `${response}`,
       });
     })
     .catch((error) => {

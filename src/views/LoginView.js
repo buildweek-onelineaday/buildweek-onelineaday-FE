@@ -103,10 +103,10 @@ const initialState = {
     password: '',
   },
   signupCredentials: {
-    displayName: '',
+    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    phoneNumber: '',
     birthday: '',
   },
   rememberMe: false,
@@ -166,6 +166,7 @@ class LoginPage_ extends React.Component {
   handleSignUp = (e) => {
     e.preventDefault();
     this.props.signUp({ ...this.state.signupCredentials });
+    // .then(console.log(`${this.props.message}`));
     this.setState({
       ...this.state,
       signupCredentials: initialState.signupCredentials,
@@ -184,7 +185,6 @@ class LoginPage_ extends React.Component {
             <source src={BackgroundVideo} type='video/mp4' />
           </video>
         </div>
-        {/* <div className={this.classes.cardContainer}> */}
         <Container className={this.classes.cardContainer} maxWidth='sm'>
           <Card className={this.classes.card}>
             <Avatar className={this.classes.avatar}>
@@ -200,7 +200,7 @@ class LoginPage_ extends React.Component {
                 required
                 fullWidth
                 id='email'
-                label='Email Address'
+                label='Email Address or Username'
                 name='email'
                 autoComplete='email'
                 autoFocus
@@ -277,20 +277,20 @@ class LoginPage_ extends React.Component {
             <form onSubmit={(e) => e.preventDefault()}>
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
-                id='displayName'
-                label='Display Name'
-                name='displayName'
-                autoComplete='displayName'
+                id='userName'
+                label='User Name'
+                name='username'
+                autoComplete='userName'
                 autoFocus
-                value={this.state.signupCredentials.displayName}
+                value={this.state.signupCredentials.username}
                 onChange={this.handleSignUpInput}
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
                 id='email'
@@ -302,7 +302,7 @@ class LoginPage_ extends React.Component {
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
                 name='password'
@@ -315,20 +315,18 @@ class LoginPage_ extends React.Component {
               />
               <TextField
                 variant='outlined'
-                margin='normal'
-                required
+                margin='dense'
                 fullWidth
-                name='confirmPassword'
-                label='Confirm Password'
-                type='password'
-                id='confirmPassword'
-                autoComplete='current-password'
-                value={this.state.signupCredentials.confirmPassword}
+                id='phoneNumber'
+                label='Phone Number'
+                name='phoneNumber'
+                autoComplete='(000)000-0000'
+                value={this.state.signupCredentials.phoneNumber}
                 onChange={this.handleSignUpInput}
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
                 id='birthday'
@@ -354,7 +352,7 @@ const LoginPage = withStyles(styles)(LoginPage_);
 
 const mapStateToProps = (state) => {
   return {
-    error: state.loginReducer.error,
+    message: state.loginReducer.message,
     pending: state.loginReducer.pending,
   };
 };
