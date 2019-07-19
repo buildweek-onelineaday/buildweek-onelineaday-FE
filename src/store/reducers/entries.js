@@ -1,6 +1,7 @@
 import {
   ADD_ENTRY_SUCCESS,
-  DELETE_ENTRY_SUCCESS
+  DELETE_ENTRY_SUCCESS,
+  UPDATE_ENTRY_SUCCESS
 } from '../actions';
 
 export default (state = [], action) => {
@@ -12,6 +13,8 @@ export default (state = [], action) => {
       ];
     case DELETE_ENTRY_SUCCESS:
       return state.filter(entry => entry.id !== action.payload);
+    case UPDATE_ENTRY_SUCCESS:
+      return state.map(entry => entry.id === action.id ? {...entry, text: action.text} : entry);
     default:
       return state;
   }

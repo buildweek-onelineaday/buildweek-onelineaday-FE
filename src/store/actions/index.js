@@ -15,11 +15,20 @@ export const ADD_ENTRY_FAILURE = 'ADD_ENTRY_FAILURE';
 export const DELETE_ENTRY_START = 'DELETE_ENTRY_START';
 export const DELETE_ENTRY_SUCCESS = 'DELETE_ENTRY_SUCCESS';
 export const DELETE_ENTRY_FAILURE = 'DELETE_ENTRY_FAILURE';
+export const UPDATE_ENTRY_START = 'UPDATE_ENTRY_START';
+export const UPDATE_ENTRY_SUCCESS = 'UPDATE_ENTRY_SUCCESS';
+export const UPDATE_ENTRY_FAILURE = 'UPDATE_ENTRY_FAILURE';
+export const REMOVE_ACTIVE_ENTRY = 'REMOVE_ACTIVE_ENTRY';
+export const SET_ACTIVE_ENTRY = 'SET_ACTIVE_ENTRY';
 
 // GOOFY FETCH ACTION VARIABLES
 export const QUOTE_FETCH_START = 'QUOTE_FETCH_START';
 export const QUOTE_FETCH_SUCCESS = 'QUOTE_FETCH_SUCCESS';
 export const QUOTE_FETCH_FAILURE = 'QUOTE_FETCH_FAILURE';
+
+// MODAL ACTION VARIABLES
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 // ACTIONS
 export const login = (loginInfo) => (dispatch) => {
@@ -88,4 +97,27 @@ export const getCardQuote = () => (dispatch) => {
         payload: `${error}`,
       });
     });
+};
+
+export const updateEntry = (id, text) => (dispatch) => {
+  dispatch({
+    type: UPDATE_ENTRY_SUCCESS,
+    id,
+    text,
+  });
+  dispatch({ type: CLOSE_MODAL });
+  dispatch({ type: REMOVE_ACTIVE_ENTRY });
+};
+
+export const openModal = (entry) => (dispatch) => {
+  dispatch({ type: OPEN_MODAL });
+  dispatch({
+    type: SET_ACTIVE_ENTRY,
+    payload: entry,
+  });
+};
+
+export const closeModal = () => (dispatch) => {
+  dispatch({ type: CLOSE_MODAL });
+  dispatch({ type: REMOVE_ACTIVE_ENTRY });
 };

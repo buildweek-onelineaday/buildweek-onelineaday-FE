@@ -27,8 +27,8 @@ import {
   PowerSettingsNew as LogoutIcon,
 } from '@material-ui/icons';
 
-import { addEntry, deleteEntry } from '../store/actions';
-import { EntryForm, Timeline, QuoteCard } from '../components/dashboard/';
+import { addEntry, deleteEntry, updateEntry, closeModal } from '../store/actions';
+import { EntryForm, EntryModal, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
   <div>
@@ -197,6 +197,12 @@ function Dashboard(props) {
         <Container maxWidth='lg' className={classes.container}>
           <QuoteCard />
           <EntryForm addEntry={props.addEntry} />
+          <EntryModal
+            activeEntry={props.activeEntry}
+            onClose={props.closeModal}
+            open={props.modalOpen}
+            updateEntry={props.updateEntry}
+          />
           <Timeline deleteEntry entries={props.entries} />
         </Container>
       </main>
@@ -209,12 +215,16 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  activeEntry: state.activeEntry,
   entries: state.entries,
+  modalOpen: state.modalOpen,
 });
 
 const mapDispatch = {
   addEntry,
   deleteEntry,
+  updateEntry,
+  closeModal,
 };
 
 export default connect(

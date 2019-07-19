@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { deleteEntry } from '../../../store/actions';
-
 import {
   Grid,
   Paper,
@@ -13,7 +11,12 @@ import {
 
 import { makeStyles } from '@material-ui/styles';
 
+import { openModal, deleteEntry } from '../../../store/actions';
+
 const useStyles = makeStyles({
+  container: {
+    marginTop: '16px'
+  },
   date: {
     fontSize: '13px',
     fontWeight: 500,
@@ -25,13 +28,13 @@ const useStyles = makeStyles({
   }
 });
 
-function Entry({ id, date, text, ...props }) {
+function Entry({ entry, ...props }) {
   const classes = useStyles();
-  
-  const formattedDate = moment(date).format('lll');
+
+  const formattedDate = moment(entry.date).format('lll');
 
   return (
-    <Grid item>
+    <Grid className={classes.container} item>
       <Paper
         className={classes.paper}
       >
@@ -42,7 +45,7 @@ function Entry({ id, date, text, ...props }) {
         >
           <Grid item>
             <Typography variant="body2">
-              {text}
+              {entry.text}
             </Typography>
           </Grid>
           <Grid item>
@@ -52,10 +55,10 @@ function Entry({ id, date, text, ...props }) {
               justify="space-between"
             >
               <Grid item>
-                <Button onClick={() => props.deleteEntry(id)} size="small">
+                <Button onClick={() => props.deleteEntry(entry.id)} size="small">
                   Delete
                 </Button>
-                <Button size="small">
+                <Button onClick={() => props.openModal(entry)} size="small">
                   Edit
                 </Button>
               </Grid>
@@ -78,5 +81,5 @@ function Entry({ id, date, text, ...props }) {
 
 export default connect(
   null,
-  { deleteEntry }
+  { deleteEntry, openModal }
 )(Entry);

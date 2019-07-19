@@ -21,16 +21,17 @@ const useStyles = makeStyles({
     width: '56px'
   },
   paper: {
-    margin: 'auto auto 16px auto',
     padding: '8px'
   }
 });
 
-export default ({ addEntry }) => {
+export default ({ activeEntry, addEntry, updateEntry }) => {
+  const { id, text } = activeEntry || {};
+
   const classes = useStyles();
 
   const [state, setState] = useState({
-    input: '',
+    input: text || '',
     maxLength: 320
   });
 
@@ -42,9 +43,12 @@ export default ({ addEntry }) => {
     if (!state.input)
       return;
 
-    addEntry(state.input);
-
-    setState({...state, input: ''});
+    if (activeEntry) {
+      updateEntry(id, state.input);
+    } else {
+      addEntry(state.input);
+      setState({...state, input: ''});
+    }
   };
 
   const handleKeyDown = e => {
