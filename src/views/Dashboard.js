@@ -28,7 +28,7 @@ import {
 } from '@material-ui/icons';
 
 import { addEntry, deleteEntry } from '../store/actions';
-import { EntryForm, Timeline } from '../components/dashboard/';
+import { EntryForm, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
   <div>
@@ -195,6 +195,7 @@ function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
+          <QuoteCard />
           <EntryForm addEntry={props.addEntry} />
           <Timeline deleteEntry entries={props.entries} />
         </Container>
