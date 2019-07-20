@@ -106,8 +106,8 @@ const initialState = {
     username: '',
     email: '',
     password: '',
-    phoneNumber: '',
-    birthday: '',
+    phone: '',
+    birthdate: '',
   },
   rememberMe: false,
   signupAccess: false,
@@ -317,11 +317,11 @@ class LoginPage_ extends React.Component {
                 variant='outlined'
                 margin='dense'
                 fullWidth
-                id='phoneNumber'
+                id='phone'
                 label='Phone Number'
-                name='phoneNumber'
+                name='phone'
                 autoComplete='(000)000-0000'
-                value={this.state.signupCredentials.phoneNumber}
+                value={this.state.signupCredentials.phone}
                 onChange={this.handleSignUpInput}
               />
               <TextField
@@ -329,11 +329,11 @@ class LoginPage_ extends React.Component {
                 margin='dense'
                 required
                 fullWidth
-                id='birthday'
+                id='birthdate'
                 label='Date of Birth'
-                name='birthday'
+                name='birthdate'
                 autoComplete='00/00/00'
-                value={this.state.signupCredentials.birthday}
+                value={this.state.signupCredentials.birthdate}
                 onChange={this.handleSignUpInput}
               />
             </form>
