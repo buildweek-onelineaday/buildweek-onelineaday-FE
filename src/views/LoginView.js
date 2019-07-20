@@ -166,7 +166,6 @@ class LoginPage_ extends React.Component {
   handleSignUp = (e) => {
     e.preventDefault();
     this.props.signUp({ ...this.state.signupCredentials });
-    // .then(console.log(`${this.props.message}`));
     this.setState({
       ...this.state,
       signupCredentials: initialState.signupCredentials,
@@ -175,10 +174,7 @@ class LoginPage_ extends React.Component {
   };
 
   render() {
-    // if (localStorage.getItem('userToken')) {
-    //   return <Redirect to='/' />;
-    // }
-    return (
+    return !localStorage.getItem('userToken') ? (
       <Container className={this.classes.container}>
         <div className={this.classes.videoContainer}>
           <video className={this.classes.video} autoPlay muted loop>
@@ -247,7 +243,6 @@ class LoginPage_ extends React.Component {
               </Button>
             </form>
           </Card>
-          {/* </div> */}
         </Container>
         <Dialog
           fullscreen='true'
@@ -340,6 +335,8 @@ class LoginPage_ extends React.Component {
           </Card>
         </Dialog>
       </Container>
+    ) : (
+      <Redirect to='/dashboard' />
     );
   }
 }

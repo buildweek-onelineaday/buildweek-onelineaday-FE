@@ -5,6 +5,7 @@ import auth from '../auth';
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
 export const SIGNUP_START = 'SIGNUP_START';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
@@ -35,13 +36,11 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const login = (loginInfo) => (dispatch) => {
   dispatch({ type: LOGIN_START });
   const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/login`, loginInfo);
-  console.log(loginInfo);
   request
     .then((response) => {
-      console.log(response);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: response.data.payload, // TODO: update to match what is being received from backend
+        payload: response.data.your_token,
       });
     })
     .catch((error) => {
@@ -50,6 +49,10 @@ export const login = (loginInfo) => (dispatch) => {
         payload: `${error}`,
       });
     });
+};
+
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
 };
 
 export const signUp = (signupInfo) => (dispatch) => {
