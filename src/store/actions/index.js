@@ -35,6 +35,7 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const login = (loginInfo) => (dispatch) => {
   dispatch({ type: LOGIN_START });
   const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/login`, loginInfo);
+  console.log(loginInfo);
   request
     .then((response) => {
       console.log(response);
@@ -53,13 +54,12 @@ export const login = (loginInfo) => (dispatch) => {
 
 export const signUp = (signupInfo) => (dispatch) => {
   dispatch({ type: SIGNUP_START });
-  console.log(signupInfo);
   const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/register`, signupInfo);
   request
     .then((response) => {
       dispatch({
         type: SIGNUP_SUCCESS,
-        payload: `${response}`,
+        payload: `${response.data}`,
       });
     })
     .catch((error) => {

@@ -99,7 +99,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialState = {
   credentials: {
-    email: '',
+    username: '',
     password: '',
   },
   signupCredentials: {
@@ -199,12 +199,12 @@ class LoginPage_ extends React.Component {
                 margin='normal'
                 required
                 fullWidth
-                id='email'
-                label='Email Address or Username'
-                name='email'
-                autoComplete='email'
+                id='username'
+                label='Username'
+                name='username'
+                autoComplete='username'
                 autoFocus
-                value={this.state.credentials.email}
+                value={this.state.credentials.username}
                 onChange={this.handleLoginInput}
               />
               <TextField
