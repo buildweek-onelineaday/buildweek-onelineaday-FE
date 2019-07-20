@@ -1,7 +1,7 @@
 import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE } from '../actions';
 
 const initialState = {
-  error: null,
+  message: null,
   pending: false,
 };
 
@@ -10,19 +10,18 @@ export function loginReducer(state = initialState, action) {
     case LOGIN_START:
       return {
         ...state,
-        error: null,
+        message: '',
         pending: true,
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
-        error: null,
         pending: false,
       };
     case LOGIN_FAILURE:
       return {
         ...state,
-        error: action.payload,
+        message: `${action.payload}`,
       };
     default:
       return state;

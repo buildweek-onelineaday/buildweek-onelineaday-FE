@@ -1,7 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import moment from 'moment';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Drawer,
@@ -16,7 +18,6 @@ import {
   Button,
   IconButton,
   Container,
-  Link,
 } from '@material-ui/core';
 import {
   Menu as MenuIcon,
@@ -27,7 +28,7 @@ import {
   PowerSettingsNew as LogoutIcon,
 } from '@material-ui/icons';
 
-import { addEntry, deleteEntry, updateEntry, closeModal } from '../store/actions';
+import { addEntry, deleteEntry, updateEntry, closeModal, logout } from '../store/actions';
 import { EntryForm, EntryModal, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
@@ -59,6 +60,7 @@ const secondaryListItems = (
 );
 
 const drawerWidth = 240;
+const today = moment();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -146,14 +148,21 @@ const useStyles = makeStyles((theme) => ({
 function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [loggedIn, setLogin] = React.useState(localStorage.getItem('userToken'));
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    props.logout();
+    setLogin(false);
+  };
 
-  return (
+  // return <Redirect to='/dashboard' />
+  return loggedIn ? (
     <div className={classes.root}>
       <AppBar position='absolute' className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
@@ -169,7 +178,12 @@ function Dashboard(props) {
           <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
             Welcome to the One Line a Day Journal!
           </Typography>
-          <Button variant='contained' color='inherit' className={classes.button}>
+          <Button
+            variant='contained'
+            color='inherit'
+            className={classes.button}
+            onClick={handleLogout}
+          >
             <LogoutIcon />
             Log Out
           </Button>
@@ -195,8 +209,11 @@ function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
-          <QuoteCard />
-          <EntryForm addEntry={props.addEntry} />
+          {props.entries[0] && today.isSame(moment(props.entries[0].date), 'day') ? (
+            <QuoteCard />
+          ) : (
+            <EntryForm addEntry={props.addEntry} />
+          )}
           <EntryModal
             activeEntry={props.activeEntry}
             onClose={props.closeModal}
@@ -207,6 +224,8 @@ function Dashboard(props) {
         </Container>
       </main>
     </div>
+  ) : (
+    <Redirect to='/' />
   );
 }
 
@@ -225,6 +244,7 @@ const mapDispatch = {
   deleteEntry,
   updateEntry,
   closeModal,
+  logout,
 };
 
 export default connect(

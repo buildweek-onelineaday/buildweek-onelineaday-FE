@@ -1,9 +1,11 @@
 import axios from 'axios';
+import auth from '../auth';
 
 // USER LOGIN AND CREATION ACTION VARIABLES
 export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
 export const SIGNUP_START = 'SIGNUP_START';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
@@ -33,12 +35,12 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 // ACTIONS
 export const login = (loginInfo) => (dispatch) => {
   dispatch({ type: LOGIN_START });
-  const request = axios.post(``, loginInfo);
+  const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/login`, loginInfo);
   request
     .then((response) => {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: response.data.payload,
+        payload: response.data.your_token,
       });
     })
     .catch((error) => {
@@ -49,14 +51,18 @@ export const login = (loginInfo) => (dispatch) => {
     });
 };
 
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
+};
+
 export const signUp = (signupInfo) => (dispatch) => {
   dispatch({ type: SIGNUP_START });
-  const request = axios.post(``, signupInfo);
+  const request = axios.post(`https://pt-one-line-a-day.herokuapp.com/register`, signupInfo);
   request
     .then((response) => {
       dispatch({
         type: SIGNUP_SUCCESS,
-        payload: response.data.payload,
+        payload: `${response.data}`,
       });
     })
     .catch((error) => {

@@ -99,15 +99,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialState = {
   credentials: {
-    email: '',
+    username: '',
     password: '',
   },
   signupCredentials: {
-    displayName: '',
+    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    birthday: '',
+    phone: '',
+    birthdate: '',
   },
   rememberMe: false,
   signupAccess: false,
@@ -174,17 +174,13 @@ class LoginPage_ extends React.Component {
   };
 
   render() {
-    // if (localStorage.getItem('userToken')) {
-    //   return <Redirect to='/' />;
-    // }
-    return (
+    return !localStorage.getItem('userToken') ? (
       <Container className={this.classes.container}>
         <div className={this.classes.videoContainer}>
           <video className={this.classes.video} autoPlay muted loop>
             <source src={BackgroundVideo} type='video/mp4' />
           </video>
         </div>
-        {/* <div className={this.classes.cardContainer}> */}
         <Container className={this.classes.cardContainer} maxWidth='sm'>
           <Card className={this.classes.card}>
             <Avatar className={this.classes.avatar}>
@@ -199,12 +195,12 @@ class LoginPage_ extends React.Component {
                 margin='normal'
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id='username'
+                label='Username'
+                name='username'
+                autoComplete='username'
                 autoFocus
-                value={this.state.credentials.email}
+                value={this.state.credentials.username}
                 onChange={this.handleLoginInput}
               />
               <TextField
@@ -247,7 +243,6 @@ class LoginPage_ extends React.Component {
               </Button>
             </form>
           </Card>
-          {/* </div> */}
         </Container>
         <Dialog
           fullscreen='true'
@@ -277,20 +272,20 @@ class LoginPage_ extends React.Component {
             <form onSubmit={(e) => e.preventDefault()}>
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
-                id='displayName'
-                label='Display Name'
-                name='displayName'
-                autoComplete='displayName'
+                id='userName'
+                label='User Name'
+                name='username'
+                autoComplete='userName'
                 autoFocus
-                value={this.state.signupCredentials.displayName}
+                value={this.state.signupCredentials.username}
                 onChange={this.handleSignUpInput}
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
                 id='email'
@@ -302,7 +297,7 @@ class LoginPage_ extends React.Component {
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
                 name='password'
@@ -315,33 +310,33 @@ class LoginPage_ extends React.Component {
               />
               <TextField
                 variant='outlined'
-                margin='normal'
-                required
+                margin='dense'
                 fullWidth
-                name='confirmPassword'
-                label='Confirm Password'
-                type='password'
-                id='confirmPassword'
-                autoComplete='current-password'
-                value={this.state.signupCredentials.confirmPassword}
+                id='phone'
+                label='Phone Number'
+                name='phone'
+                autoComplete='(000)000-0000'
+                value={this.state.signupCredentials.phone}
                 onChange={this.handleSignUpInput}
               />
               <TextField
                 variant='outlined'
-                margin='normal'
+                margin='dense'
                 required
                 fullWidth
-                id='birthday'
+                id='birthdate'
                 label='Date of Birth'
-                name='birthday'
+                name='birthdate'
                 autoComplete='00/00/00'
-                value={this.state.signupCredentials.birthday}
+                value={this.state.signupCredentials.birthdate}
                 onChange={this.handleSignUpInput}
               />
             </form>
           </Card>
         </Dialog>
       </Container>
+    ) : (
+      <Redirect to='/dashboard' />
     );
   }
 }
@@ -354,7 +349,7 @@ const LoginPage = withStyles(styles)(LoginPage_);
 
 const mapStateToProps = (state) => {
   return {
-    error: state.loginReducer.error,
+    message: state.loginReducer.message,
     pending: state.loginReducer.pending,
   };
 };
