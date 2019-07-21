@@ -23,8 +23,8 @@ import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
+  // BarChart as BarChartIcon,
+  // Settings as SettingsIcon,
   PowerSettingsNew as LogoutIcon,
 } from '@material-ui/icons';
 
@@ -39,27 +39,27 @@ const mainListItems = (
       </ListItemIcon>
       <ListItemText primary='Dashboard' />
     </ListItem>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary='10 Year Overview' />
-    </ListItem>
+    </ListItem> */}
   </div>
 );
 
 const secondaryListItems = (
   <div>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary='Settings' />
-    </ListItem>
+    </ListItem> */}
   </div>
 );
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 const today = moment();
 
 const useStyles = makeStyles((theme) => ({
@@ -161,7 +161,6 @@ function Dashboard(props) {
     setLogin(false);
   };
 
-  // return <Redirect to='/dashboard' />
   return loggedIn ? (
     <div className={classes.root}>
       <AppBar position='absolute' className={clsx(classes.appBar, open && classes.appBarShift)}>
