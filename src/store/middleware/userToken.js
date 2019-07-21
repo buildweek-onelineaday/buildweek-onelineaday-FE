@@ -14,7 +14,8 @@ export const addTokenToLocalStorage = (store) => (next) => (action) => {
 
 export const removeTokenFromLocalStorage = (store) => (next) => (action) => {
   if (action.type === LOGOUT) {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userToken');
   }
   next(action);
 };
