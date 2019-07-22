@@ -1,7 +1,9 @@
 import React from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import LoginPage from './views/LoginPage';
+import { PrivateRoute } from './components';
+import LoginView from './views/LoginView';
+import Dashboard from './views/Dashboard';
 
 const theme = createMuiTheme({
   palette: {
@@ -24,12 +26,11 @@ const theme = createMuiTheme({
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      {/* <h1>One Line a Day</h1>
-      <p>Content Goes Here</p> */}
       <Router>
-        {/* <Route exact path='/' component={LandingPage} /> */}
-        {/* <Route exact path='/login' component={LoginPage} /> */}
-        <Route exact path='/' component={LoginPage} />
+        {/* <Route exact path='/' component={LandingView} /> */}
+        {/* <Route exact path='/login' component={LoginView} /> */}
+        <Route exact path='/' component={LoginView} />
+        <PrivateRoute exact path='/dashboard' component={Dashboard} />
       </Router>
     </MuiThemeProvider>
   );
