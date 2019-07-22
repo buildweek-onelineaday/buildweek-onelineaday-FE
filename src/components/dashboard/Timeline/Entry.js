@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 function Entry({ entry, ...props }) {
   const classes = useStyles();
 
-  const formattedDate = moment(entry.date).format('lll');
+  const formattedDate = moment(entry.created_at).format('lll');
 
   return (
     <Grid className={classes.container} item>
@@ -45,7 +45,7 @@ function Entry({ entry, ...props }) {
         >
           <Grid item>
             <Typography variant="body2">
-              {entry.text}
+              {entry.post}
             </Typography>
           </Grid>
           <Grid item>
