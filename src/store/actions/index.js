@@ -80,54 +80,69 @@ export const signUp = (signupInfo) => (dispatch) => {
     });
 };
 
-export const fetchEntries = () => dispatch => {
+export const fetchEntries = () => (dispatch) => {
   dispatch({ type: FETCH_ENTRIES_START });
 
-  return auth().get(`https://pt-one-line-a-day.herokuapp.com/posts/user/${uid}`)
-              .then(r => dispatch({
-                type: FETCH_ENTRIES_SUCCESS,
-                payload: r.data
-              }))
-              .catch(err => dispatch({
-                type: FETCH_ENTRIES_FAILURE,
-                error: `${err}`
-              }));
+  return auth()
+    .get(`https://pt-one-line-a-day.herokuapp.com/posts/user/${uid}`)
+    .then((r) =>
+      dispatch({
+        type: FETCH_ENTRIES_SUCCESS,
+        payload: r.data,
+      }),
+    )
+    .catch((err) =>
+      dispatch({
+        type: FETCH_ENTRIES_FAILURE,
+        error: `${err}`,
+      }),
+    );
 };
 
-export const addEntry = (text) => dispatch => {
+export const addEntry = (text) => (dispatch) => {
   dispatch({ type: ADD_ENTRY_START });
 
-  return auth().post('https://pt-one-line-a-day.herokuapp.com/posts', {
-    post: text,
-    user_id: `${uid}`
-  })
-  .then(r => dispatch({
-    type: ADD_ENTRY_SUCCESS,
-    payload: r.data
-  }))
-  .catch(err => dispatch({
-    type: ADD_ENTRY_FAILURE,
-    error: `${err}`
-  }));
+  return auth()
+    .post('https://pt-one-line-a-day.herokuapp.com/posts', {
+      post: text,
+      user_id: `${uid}`,
+    })
+    .then((r) =>
+      dispatch({
+        type: ADD_ENTRY_SUCCESS,
+        payload: r.data,
+      }),
+    )
+    .catch((err) =>
+      dispatch({
+        type: ADD_ENTRY_FAILURE,
+        error: `${err}`,
+      }),
+    );
 };
 
-export const deleteEntry = (id) => dispatch => {
+export const deleteEntry = (id) => (dispatch) => {
   dispatch({ type: DELETE_ENTRY_START });
 
-  return auth().delete(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`)
-                .then(r => dispatch({
-                  type: DELETE_ENTRY_SUCCESS,
-                  id
-                }))
-                .catch(err => dispatch({
-                  type: DELETE_ENTRY_FAILURE,
-                  payload: `${err}`
-                }));
+  return auth()
+    .delete(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`)
+    .then((r) =>
+      dispatch({
+        type: DELETE_ENTRY_SUCCESS,
+        id,
+      }),
+    )
+    .catch((err) =>
+      dispatch({
+        type: DELETE_ENTRY_FAILURE,
+        payload: `${err}`,
+      }),
+    );
 };
 
 export const getCardQuote = () => (dispatch) => {
   dispatch({ type: QUOTE_FETCH_START });
-  const request = axios.get(`http://ron-swanson-quotes.herokuapp.com/v2/quotes`);
+  const request = axios.get(`https://ron-swanson-quotes.herokuapp.com/v2/quotes`);
   request
     .then((response) => {
       dispatch({
@@ -146,23 +161,26 @@ export const getCardQuote = () => (dispatch) => {
 export const updateEntry = (id, text) => (dispatch) => {
   dispatch({ type: UPDATE_ENTRY_START });
 
-  return auth().put(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`, {
-    post: text,
-    user_id: `${uid}`
-  })
-  .then(r => {
-    dispatch({
-      type: UPDATE_ENTRY_SUCCESS,
-      id,
-      text
-    });
-    dispatch({ type: CLOSE_MODAL });
-    dispatch({ type: REMOVE_ACTIVE_ENTRY });
-  })
-  .catch(err => dispatch({
-    type: UPDATE_ENTRY_FAILURE,
-    payload: `${err}`
-  }));
+  return auth()
+    .put(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`, {
+      post: text,
+      user_id: `${uid}`,
+    })
+    .then((r) => {
+      dispatch({
+        type: UPDATE_ENTRY_SUCCESS,
+        id,
+        text,
+      });
+      dispatch({ type: CLOSE_MODAL });
+      dispatch({ type: REMOVE_ACTIVE_ENTRY });
+    })
+    .catch((err) =>
+      dispatch({
+        type: UPDATE_ENTRY_FAILURE,
+        payload: `${err}`,
+      }),
+    );
 };
 
 export const openModal = (entry) => (dispatch) => {
