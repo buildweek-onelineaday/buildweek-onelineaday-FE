@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -30,7 +30,7 @@ import {
   Close as CloseIcon,
 } from '@material-ui/icons';
 
-import { addEntry, deleteEntry, updateEntry, closeModal, logout } from '../store/actions';
+import { fetchEntries, addEntry, deleteEntry, updateEntry, closeModal, logout } from '../store/actions';
 import { EntryForm, EntryModal, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
@@ -184,6 +184,10 @@ function Dashboard(props) {
     setLogin(false);
   };
 
+  useEffect(() => {
+    props.fetchEntries();
+  }, []);
+
   return loggedIn ? (
     <div className={classes.root}>
       <AppBar
@@ -262,9 +266,9 @@ function Dashboard(props) {
                   </IconButton>,
                 ]}
               />
-              <EntryForm addEntry={props.addEntry} />
             </>
           )}
+          <EntryForm addEntry={props.addEntry} />
           <EntryModal
             activeEntry={props.activeEntry}
             onClose={props.closeModal}
@@ -286,11 +290,12 @@ function Dashboard(props) {
 
 const mapStateToProps = (state) => ({
   activeEntry: state.activeEntry,
-  entries: state.entries,
+  entries: state.entries.list,
   modalOpen: state.modalOpen,
 });
 
 const mapDispatch = {
+  fetchEntries,
   addEntry,
   deleteEntry,
   updateEntry,

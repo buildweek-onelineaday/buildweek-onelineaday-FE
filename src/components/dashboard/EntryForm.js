@@ -26,12 +26,12 @@ const useStyles = makeStyles({
 });
 
 export default ({ activeEntry, addEntry, updateEntry }) => {
-  const { id, text } = activeEntry || {};
+  const { id, post } = activeEntry || {};
 
   const classes = useStyles();
 
   const [state, setState] = useState({
-    input: text || '',
+    input: post || '',
     maxLength: 320
   });
 

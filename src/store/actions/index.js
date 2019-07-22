@@ -1,5 +1,6 @@
 import axios from 'axios';
 import auth from '../auth';
+import ls from 'local-storage';
 
 // USER LOGIN AND CREATION ACTION VARIABLES
 export const LOGIN_START = 'LOGIN_START';
@@ -17,6 +18,9 @@ export const ADD_ENTRY_FAILURE = 'ADD_ENTRY_FAILURE';
 export const DELETE_ENTRY_START = 'DELETE_ENTRY_START';
 export const DELETE_ENTRY_SUCCESS = 'DELETE_ENTRY_SUCCESS';
 export const DELETE_ENTRY_FAILURE = 'DELETE_ENTRY_FAILURE';
+export const FETCH_ENTRIES_START = 'GET_ENTRIES_START';
+export const FETCH_ENTRIES_SUCCESS = 'GET_ENTRIES_SUCCESS';
+export const FETCH_ENTRIES_FAILURE = 'GET_ENTRIES_FAILURE';
 export const UPDATE_ENTRY_START = 'UPDATE_ENTRY_START';
 export const UPDATE_ENTRY_SUCCESS = 'UPDATE_ENTRY_SUCCESS';
 export const UPDATE_ENTRY_FAILURE = 'UPDATE_ENTRY_FAILURE';
@@ -31,6 +35,9 @@ export const QUOTE_FETCH_FAILURE = 'QUOTE_FETCH_FAILURE';
 // MODAL ACTION VARIABLES
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+// USER ID
+const uid = ls.get('userId');
 
 // ACTIONS
 export const login = (loginInfo) => (dispatch) => {
@@ -73,19 +80,50 @@ export const signUp = (signupInfo) => (dispatch) => {
     });
 };
 
-export const addEntry = (text) => ({
-  type: ADD_ENTRY_SUCCESS,
-  payload: {
-    id: Date.now(),
-    date: Date.now(),
-    text,
-  },
-});
+export const fetchEntries = () => dispatch => {
+  dispatch({ type: FETCH_ENTRIES_START });
 
-export const deleteEntry = (id) => ({
-  type: DELETE_ENTRY_SUCCESS,
-  payload: id,
-});
+  return auth().get(`https://pt-one-line-a-day.herokuapp.com/posts/user/${uid}`)
+              .then(r => dispatch({
+                type: FETCH_ENTRIES_SUCCESS,
+                payload: r.data
+              }))
+              .catch(err => dispatch({
+                type: FETCH_ENTRIES_FAILURE,
+                error: `${err}`
+              }));
+};
+
+export const addEntry = (text) => dispatch => {
+  dispatch({ type: ADD_ENTRY_START });
+
+  return auth().post('https://pt-one-line-a-day.herokuapp.com/posts', {
+    post: text,
+    user_id: `${uid}`
+  })
+  .then(r => dispatch({
+    type: ADD_ENTRY_SUCCESS,
+    payload: r.data
+  }))
+  .catch(err => dispatch({
+    type: ADD_ENTRY_FAILURE,
+    error: `${err}`
+  }));
+};
+
+export const deleteEntry = (id) => dispatch => {
+  dispatch({ type: DELETE_ENTRY_START });
+
+  return auth().delete(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`)
+                .then(r => dispatch({
+                  type: DELETE_ENTRY_SUCCESS,
+                  id
+                }))
+                .catch(err => dispatch({
+                  type: DELETE_ENTRY_FAILURE,
+                  payload: `${err}`
+                }));
+};
 
 export const getCardQuote = () => (dispatch) => {
   dispatch({ type: QUOTE_FETCH_START });
@@ -106,13 +144,25 @@ export const getCardQuote = () => (dispatch) => {
 };
 
 export const updateEntry = (id, text) => (dispatch) => {
-  dispatch({
-    type: UPDATE_ENTRY_SUCCESS,
-    id,
-    text,
-  });
-  dispatch({ type: CLOSE_MODAL });
-  dispatch({ type: REMOVE_ACTIVE_ENTRY });
+  dispatch({ type: UPDATE_ENTRY_START });
+
+  return auth().put(`https://pt-one-line-a-day.herokuapp.com/posts/${id}`, {
+    post: text,
+    user_id: `${uid}`
+  })
+  .then(r => {
+    dispatch({
+      type: UPDATE_ENTRY_SUCCESS,
+      id,
+      text
+    });
+    dispatch({ type: CLOSE_MODAL });
+    dispatch({ type: REMOVE_ACTIVE_ENTRY });
+  })
+  .catch(err => dispatch({
+    type: UPDATE_ENTRY_FAILURE,
+    payload: `${err}`
+  }));
 };
 
 export const openModal = (entry) => (dispatch) => {
