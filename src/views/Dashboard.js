@@ -18,14 +18,16 @@ import {
   Button,
   IconButton,
   Container,
+  Snackbar,
 } from '@material-ui/core';
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
+  // BarChart as BarChartIcon,
+  // Settings as SettingsIcon,
   PowerSettingsNew as LogoutIcon,
+  Close as CloseIcon,
 } from '@material-ui/icons';
 
 import { addEntry, deleteEntry, updateEntry, closeModal, logout } from '../store/actions';
@@ -39,27 +41,27 @@ const mainListItems = (
       </ListItemIcon>
       <ListItemText primary='Dashboard' />
     </ListItem>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary='10 Year Overview' />
-    </ListItem>
+    </ListItem> */}
   </div>
 );
 
 const secondaryListItems = (
   <div>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary='Settings' />
-    </ListItem>
+    </ListItem> */}
   </div>
 );
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 const today = moment();
 
 const useStyles = makeStyles((theme) => ({
@@ -147,13 +149,34 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [snackbarState, setSnackbarState] = React.useState({
+    snackbarOpen:
+      !props.entries[0] || (props.entries[0] && today.isSame(moment(props.entries[0].date), 'day')),
+    messageRelease: false,
+  });
   const [loggedIn, setLogin] = React.useState(localStorage.getItem('userToken'));
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setDrawerOpen(true);
   };
   const handleDrawerClose = () => {
-    setOpen(false);
+    setDrawerOpen(false);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarState({
+      ...snackbarState,
+      snackbarOpen: false,
+    });
+  };
+  const handleMessageRelease = () => {
+    setSnackbarState({
+      ...snackbarState,
+      messageRelease: true,
+    });
+    handleSnackbarClose();
   };
   const handleLogout = (e) => {
     e.preventDefault();
@@ -161,17 +184,19 @@ function Dashboard(props) {
     setLogin(false);
   };
 
-  // return <Redirect to='/dashboard' />
   return loggedIn ? (
     <div className={classes.root}>
-      <AppBar position='absolute' className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar
+        position='absolute'
+        className={clsx(classes.appBar, drawerOpen && classes.appBarShift)}
+      >
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge='start'
             color='inherit'
             aria-label='Open drawer'
             onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            className={clsx(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
@@ -192,9 +217,9 @@ function Dashboard(props) {
       <Drawer
         variant='permanent'
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          paper: clsx(classes.drawerPaper, !drawerOpen && classes.drawerPaperClose),
         }}
-        open={open}
+        open={drawerOpen}
       >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
@@ -212,7 +237,33 @@ function Dashboard(props) {
           {props.entries[0] && today.isSame(moment(props.entries[0].date), 'day') ? (
             <QuoteCard />
           ) : (
-            <EntryForm addEntry={props.addEntry} />
+            <>
+              <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                autoHideDuration={6000}
+                open={snackbarState.snackbarOpen && !snackbarState.messageRelease}
+                onClose={handleSnackbarClose}
+                ContentProps={{
+                  'aria-describedby': 'message-id',
+                }}
+                message={
+                  <span id='message-id'>
+                    Thank you for logging in! Don't forget to make your daily entry!
+                  </span>
+                }
+                action={[
+                  <IconButton
+                    key='close'
+                    aria-label='Close'
+                    color='secondary'
+                    onClick={handleMessageRelease}
+                  >
+                    <CloseIcon />
+                  </IconButton>,
+                ]}
+              />
+              <EntryForm addEntry={props.addEntry} />
+            </>
           )}
           <EntryModal
             activeEntry={props.activeEntry}
@@ -229,9 +280,9 @@ function Dashboard(props) {
   );
 }
 
-Dashboard.propTypes = {
-  //datatype validation goes here for provided props
-};
+// Dashboard.propTypes = {
+//   //datatype validation goes here for provided props
+// };
 
 const mapStateToProps = (state) => ({
   activeEntry: state.activeEntry,

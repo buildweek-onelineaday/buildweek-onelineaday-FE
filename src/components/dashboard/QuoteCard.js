@@ -36,7 +36,7 @@ class QuoteCard_ extends React.Component {
         {this.props.pending ? (
           <CircularProgress className={this.props.classes.progress} color='secondary' />
         ) : (
-          <Card className={this.props.classes.card} maxWidth='sm'>
+          <Card className={this.props.classes.card}>
             <CardHeader title='Entry Submitted. All Done!' />
             <CardMedia
               component='img'

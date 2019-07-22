@@ -40,7 +40,7 @@ export const login = (loginInfo) => (dispatch) => {
     .then((response) => {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: response.data.your_token,
+        payload: response.data,
       });
     })
     .catch((error) => {
