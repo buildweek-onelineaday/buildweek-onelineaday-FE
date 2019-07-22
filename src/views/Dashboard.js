@@ -30,7 +30,14 @@ import {
   Close as CloseIcon,
 } from '@material-ui/icons';
 
-import { fetchEntries, addEntry, deleteEntry, updateEntry, closeModal, logout } from '../store/actions';
+import {
+  fetchEntries,
+  addEntry,
+  deleteEntry,
+  updateEntry,
+  closeModal,
+  logout,
+} from '../store/actions';
 import { EntryForm, EntryModal, Timeline, QuoteCard } from '../components/dashboard/';
 
 const mainListItems = (
@@ -238,7 +245,8 @@ function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
-          {props.entries[0] && today.isSame(moment(props.entries[0].date), 'day') ? (
+          {props.entries[0] &&
+          today.isSame(moment(props.entries[props.entries.length - 1].date), 'day') ? (
             <QuoteCard />
           ) : (
             <>
@@ -266,9 +274,9 @@ function Dashboard(props) {
                   </IconButton>,
                 ]}
               />
+              <EntryForm addEntry={props.addEntry} />
             </>
           )}
-          <EntryForm addEntry={props.addEntry} />
           <EntryModal
             activeEntry={props.activeEntry}
             onClose={props.closeModal}
